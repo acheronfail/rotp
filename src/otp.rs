@@ -31,10 +31,18 @@ pub fn hotp(secret: &str, counter: u64) -> Result<u32> {
     encode_digest(digest.as_ref())
 }
 
-/// Helper function for `totp` to make it testable. Note that times
-/// before Unix epoch are not supported.
+/// Helper function for `totp` to make it testable.
 fn make_totp(secret: &str, time_step: u64, skew: i64, time: u64) -> Result<u32> {
-    let counter = ((time as i64 + skew) as u64) / time_step;
+    if time_step == 0 {
+        bail!("time-step must be > 0");
+    }
+
+    let time_with_skew = time as i64 + skew;
+    if time_with_skew < 0 {
+        bail!("time + skew must be >= 0");
+    }
+
+    let counter = (time_with_skew as u64) / time_step;
     hotp(secret, counter)
 }
 
@@ -60,17 +68,27 @@ mod tests {
     const BASE32_SECRET: &str = "ALLYOURBASEAREBELONGTOUS";
 
     #[test]
-    fn test_hotp() {
+    fn hotp_works() {
         assert_eq!(hotp(BASE32_SECRET, 0).unwrap(), 173468);
         assert_eq!(hotp(BASE32_SECRET, 1).unwrap(), 676177);
-        assert_eq!(hotp(BASE32_SECRET, 1401).unwrap(), 118134);
+        assert_eq!(hotp(BASE32_SECRET, 1729).unwrap(), 102510);
     }
 
     #[test]
-    fn test_totp() {
+    fn totp_works() {
         assert_eq!(make_totp(BASE32_SECRET, 30, 0, 0).unwrap(), 173468);
         assert_eq!(make_totp(BASE32_SECRET, 3600, 0, 7).unwrap(), 173468);
         assert_eq!(make_totp(BASE32_SECRET, 30, 0, 35).unwrap(), 676177);
-        assert_eq!(make_totp(BASE32_SECRET, 1, -2, 1403).unwrap(), 118134);
+        assert_eq!(make_totp(BASE32_SECRET, 1, -2, 1731).unwrap(), 102510);
+    }
+
+    #[test]
+    fn totp_time_step_gt_zero() {
+        assert_eq!(format!("{}", make_totp(BASE32_SECRET, 0, 0, 0).unwrap_err()), "time-step must be > 0");
+    }
+
+    #[test]
+    fn totp_time_and_skew_ge_zero() {
+        assert_eq!(format!("{}", make_totp(BASE32_SECRET, 30, -10, 5).unwrap_err()), "time + skew must be >= 0");
     }
 }

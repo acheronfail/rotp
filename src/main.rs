@@ -7,14 +7,17 @@ fn main() {
     let args = Args::parse();
     let code = match args.command {
         Command::HOTP { secret, counter } => {
-            otp::hotp(&secret, counter).expect("failed to generate HOTP code")
+            otp::hotp(&secret, counter)
         }
         Command::TOTP {
             secret,
             time_step,
             skew,
-        } => otp::totp(&secret, time_step, skew).expect("failed to generate TOTP code"),
+        } => otp::totp(&secret, time_step, skew),
     };
 
-    println!("{}", code);
+    match code {
+        Ok(code) => println!("{}", code),
+        Err(e) => eprintln!("Failed to generate code: {}", e)
+    }
 }
