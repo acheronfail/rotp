@@ -193,6 +193,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "ascii",
+ "atty",
  "clap",
  "data-encoding",
  "err-derive",
