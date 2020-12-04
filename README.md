@@ -20,6 +20,12 @@ SUBCOMMANDS:
 
 ```
 
+## Installation
+
+```bash
+cargo install rotp
+```
+
 ## Examples
 
 ```bash
