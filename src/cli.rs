@@ -53,8 +53,7 @@ pub enum Command {
         #[clap(short = 't', long = "time")]
         time_step: u64,
         /// Skew in seconds
-        #[clap(short = 'k', long = "skew")]
-        #[clap(setting(AllowHyphenValues))]
+        #[clap(short = 'k', long = "skew", setting(AllowHyphenValues))]
         skew: i64,
     },
 }
