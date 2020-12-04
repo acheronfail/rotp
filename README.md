@@ -1,13 +1,13 @@
-# OTP
+# (ROTP) Rust One Time Passwords
 
 A simple HOTP and TOTP generator.
 
 ```
-otp 0.1.0
+rotp 0.1.1
 acheronfail <acheronfail@gmail.com>
 
 USAGE:
-    otp <SUBCOMMAND>
+    rotp <SUBCOMMAND>
 
 FLAGS:
     -h, --help       Prints help information
@@ -27,17 +27,17 @@ SUBCOMMANDS:
 export BASE32_SECRET="ALLYOURBASEAREBELONGTOUS"
 
 # HOTP
-otp hotp --secret "$BASE32_SECRET" --counter 0    # 173468
-otp hotp --secret "$BASE32_SECRET" --counter 1    # 676177
-otp hotp --secret "$BASE32_SECRET" --counter 1729 # 102510
+rotp hotp --secret "$BASE32_SECRET" --counter 0    # 173468
+rotp hotp --secret "$BASE32_SECRET" --counter 1    # 676177
+rotp hotp --secret "$BASE32_SECRET" --counter 1729 # 102510
 
 # TOTP
-otp totp --secret "$BASE32_SECRET" --time 30   --skew  0 # 173468
-otp totp --secret "$BASE32_SECRET" --time 3600 --skew  0 # 173468
-otp totp --secret "$BASE32_SECRET" --time 30   --skew  0 # 676177
-otp totp --secret "$BASE32_SECRET" --time 1    --skew -2 # 102510
+rotp totp --secret "$BASE32_SECRET" --time 30   --skew  0 # 173468
+rotp totp --secret "$BASE32_SECRET" --time 3600 --skew  0 # 173468
+rotp totp --secret "$BASE32_SECRET" --time 30   --skew  0 # 676177
+rotp totp --secret "$BASE32_SECRET" --time 1    --skew -2 # 102510
 
 # Alternatively, arguments may be passed via STDIN:
-echo hotp --secret "$BASE32_SECRET" --counter 1729     | otp # 102510
-echo totp --secret "$BASE32_SECRET" --time 1 --skew -2 | otp # 102510
+echo hotp --secret "$BASE32_SECRET" --counter 1729     | rotp # 102510
+echo totp --secret "$BASE32_SECRET" --time 1 --skew -2 | rotp # 102510
 ```

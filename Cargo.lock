@@ -188,19 +188,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "afb2e1c3ee07430c2cf76151675e583e0f19985fa6efae47d6848a3e2c824f85"
 
 [[package]]
-name = "otp"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "ascii",
- "atty",
- "clap",
- "data-encoding",
- "err-derive",
- "ring",
-]
-
-[[package]]
 name = "proc-macro-error"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -255,6 +242,19 @@ dependencies = [
  "untrusted",
  "web-sys",
  "winapi",
+]
+
+[[package]]
+name = "rotp"
+version = "0.1.1"
+dependencies = [
+ "anyhow",
+ "ascii",
+ "atty",
+ "clap",
+ "data-encoding",
+ "err-derive",
+ "ring",
 ]
 
 [[package]]
