@@ -17,7 +17,7 @@ fn main() {
     };
 
     match code {
-        Ok(code) => println!("{}", code),
+        Ok(code) => println!("{:06}", code),
         Err(e) => eprintln!("Failed to generate code: {}", e)
     }
 }
