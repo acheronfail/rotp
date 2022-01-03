@@ -1,13 +1,12 @@
 use std::io::{self, Read};
 
 use atty::Stream;
-use clap::AppSettings::ColoredHelp;
 use clap::ArgSettings::AllowHyphenValues;
-use clap::{crate_authors, crate_name, crate_version, Clap};
+use clap::{crate_authors, crate_name, crate_version, Parser};
 
 /// All arguments may also be passed via STDIN, eg: echo "hotp --secret X --counter Y | otp"
-#[derive(Clap)]
-#[clap(version = crate_version!(), author = crate_authors!(), global_setting(ColoredHelp))]
+#[derive(Parser)]
+#[clap(version = crate_version!(), author = crate_authors!())]
 pub struct Args {
     #[clap(subcommand)]
     pub command: Command,
@@ -24,16 +23,16 @@ impl Args {
                 .read_to_string(&mut stdin_args)
                 .expect("failed to read arguments from STDIN");
 
-            <Args as Clap>::parse_from(
+            <Args as Parser>::parse_from(
                 format!("{} {}", crate_name!(), stdin_args).split_ascii_whitespace(),
             )
         } else {
-            <Args as Clap>::parse()
+            <Args as Parser>::parse()
         }
     }
 }
 
-#[derive(Clap)]
+#[derive(Parser)]
 pub enum Command {
     /// Generate a HOTP code
     HOTP {

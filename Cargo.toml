@@ -14,7 +14,7 @@ edition = "2018"
 anyhow = "1.0.34"
 ascii = "1.0"
 atty = "0.2.14"
-clap = { version = "3.0.0-beta.2" }
+clap = { version = "3.0.0", features = ["cargo", "derive"] }
 data-encoding = "2.1.2"
 err-derive = "0.2.1"
 ring = "0.16.9"
