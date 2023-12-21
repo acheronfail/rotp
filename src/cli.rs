@@ -2,14 +2,14 @@ use std::io::{self, Read};
 use std::str::FromStr;
 
 use atty::Stream;
-use clap::ArgSettings::AllowHyphenValues;
-use clap::{crate_authors, crate_name, crate_version, Parser};
+
+use clap::{crate_name, Parser, Subcommand, ValueEnum};
 
 /// All arguments may also be passed via STDIN, eg: echo "hotp --secret X --counter Y | otp"
 #[derive(Parser)]
-#[clap(version = crate_version!(), author = crate_authors!())]
+#[command(author, version, about, long_about = None)]
 pub struct Args {
-    #[clap(subcommand)]
+    #[command(subcommand)]
     pub command: Command,
 }
 
@@ -33,7 +33,7 @@ impl Args {
     }
 }
 
-#[derive(Debug, Parser)]
+#[derive(Debug, Clone, Copy, ValueEnum)]
 pub enum Algorithm {
     Sha1,
     Sha256,
@@ -61,7 +61,7 @@ impl Default for Algorithm {
     }
 }
 
-#[derive(Debug, Parser)]
+#[derive(Subcommand)]
 pub enum Command {
     /// Generate a HOTP code
     HOTP {
@@ -84,7 +84,7 @@ pub enum Command {
         #[clap(short = 't', long = "time", default_value = "30")]
         time_step: u64,
         /// Skew in seconds
-        #[clap(short = 'k', long = "skew", setting(AllowHyphenValues))]
+        #[clap(short = 'k', long = "skew", allow_hyphen_values = true)]
         skew: i64,
         /// Which algorithm to use
         #[clap(short = 'a', long = "algorithm", default_value = "sha1")]
